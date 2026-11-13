@@ -1,0 +1,37 @@
+name: Make signing key
+
+# One-time setup: creates the release signing key on GitHub, encrypts it with the
+# PATCHNOTES_KEY_PASS repository secret, and commits only the encrypted copy.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keygen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Create and encrypt key
+        env:
+          KEY_PASS: ${{ secrets.PATCHNOTES_KEY_PASS }}
+        run: |
+          set -e
+          if [ -f android/signing/release.keystore.enc ]; then echo "Key already exists, leaving it alone."; exit 0; fi
+          if [ -z "$KEY_PASS" ]; then echo "::error::Add the PATCHNOTES_KEY_PASS repository secret first."; exit 1; fi
+          mkdir -p android/signing
+          printf '%s' "$KEY_PASS" > ks.pass
+          keytool -genkeypair -keystore release.keystore -storetype PKCS12 -alias patchnotes -keyalg RSA -keysize 4096 -validity 36500 \
+            -storepass:file ks.pass -keypass:file ks.pass -dname "CN=Buggy Games YT, O=Buggy Games YT"
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -in release.keystore -out android/signing/release.keystore.enc -pass file:ks.pass
+          rm -f ks.pass release.keystore
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add android/signing/release.keystore.enc
+          git commit -m "Add encrypted release signing key"
+          git push
