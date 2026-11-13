@@ -1,6 +1,6 @@
 # Patch Notes
 
-A 2D platformer by **Buggy Games YT** where every level is impossible... unless you use glitches. Clip through walls, wall jump, dupe keys, ledge clip, launch off crates, walk under the map, hyper jump, dash through spikes, keep keys after dying. 18 levels plus a finale, with a hidden bug to find in every one. Then the dev posts patch notes and patches the glitch you used, so you have to find a new one.
+A 2D platformer by **Buggy Games YT** where every level is impossible... unless you use glitches. Clip through walls, wall jump, dupe keys, ledge clip, launch off crates, walk under the map, hyper jump, dash through spikes, keep keys after dying. 99 levels plus a finale, with a hidden bug in every one that only shows up after you pause. Then the dev posts patch notes and patches the glitch you used, so you have to find a new one.
 
 ▶ **Play in your browser:** https://buggygamesyt.github.io/patchnotes/
 📱 **Android:** grab the APK from [Releases](https://github.com/BuggyGamesYT/PatchNotes/releases).
